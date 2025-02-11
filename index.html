@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Ping Dashboard</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>Live Ping Dashboard</h1>
+    <table id="pingTable">
+        <thead>
+            <tr>
+                <th>Malicious or Normal</th>
+                <th>Size of the Packet</th>
+                <th>IP Address</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        function fetchLiveData() {
+            $.getJSON('/live-data', function(data) {
+                var tableBody = $('#pingTable tbody');
+                tableBody.empty();  // Clear the table
+
+                data.forEach(function(row) {
+                    tableBody.append('<tr><td>' + row['Malicious or Normal'] + '</td><td>' + row['Size of the packet'] + '</td><td>' + row['IP Address'] + '</td></tr>');
+                });
+            });
+        }
+
+        setInterval(fetchLiveData, 1000);  // Fetch data every second
+    </script>
+</body>
+</html>
